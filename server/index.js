@@ -282,7 +282,7 @@ io.on("connection", (socket) => {
       if (s) {
         const peekHand = player.hand.map((card, i) => ({
           ...card,
-          faceUp: i >= 2, // reveal cards at index 2 and 3 (bottom two)
+          faceUp: i >= 2 && i < 4, // reveal cards at index 2 and 3 (bottom two)
         }));
         s.emit("peekCards", { hand: peekHand });
       }
@@ -484,7 +484,7 @@ io.on("connection", (socket) => {
       if (s) {
         const peekHand = player.hand.map((card, i) => ({
           ...card,
-          faceUp: i >= 2,
+          faceUp: i >= 2 && i < 4, // reveal cards at index 2 and 3 (bottom two)
         }));
         s.emit("peekCards", { hand: peekHand });
       }

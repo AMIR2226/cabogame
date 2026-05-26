@@ -368,7 +368,7 @@ socket.on("peekCards", ({ hand }) => {
   for (let i = 0; i < hand.length; i++) {
     const card = hand[i];
     const wrapper = document.createElement("div");
-    wrapper.innerHTML = cardHTML({ ...card, faceUp: true }, { index: i });
+    wrapper.innerHTML = cardHTML(card, { index: i });
     handEl.appendChild(wrapper.firstChild);
   }
 

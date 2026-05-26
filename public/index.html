@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cabo – Multiplayer Card Game</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- ── Lobby Screen ── -->
+    <div id="screen-lobby" class="screen active">
+      <div class="lobby-container">
+        <h1 class="game-title">CABO</h1>
+        <p class="game-subtitle">Multiplayer Card Game</p>
+
+        <div class="card-panel">
+          <div class="input-group">
+            <label for="player-name">Your Name</label>
+            <input
+              type="text"
+              id="player-name"
+              placeholder="Enter your name"
+              maxlength="20"
+              autocomplete="off"
+            />
+          </div>
+
+          <button class="btn btn-primary" id="btn-create">Create Room</button>
+
+          <div class="divider"><span>or</span></div>
+
+          <div class="input-group">
+            <label for="room-code">Room Code</label>
+            <input
+              type="text"
+              id="room-code"
+              placeholder="Enter room code"
+              maxlength="5"
+              autocomplete="off"
+              style="text-transform: uppercase"
+            />
+          </div>
+          <button class="btn btn-secondary" id="btn-join">Join Room</button>
+        </div>
+
+        <div id="lobby-error" class="error-msg hidden"></div>
+      </div>
+    </div>
+
+    <!-- ── Waiting Room Screen ── -->
+    <div id="screen-waiting" class="screen">
+      <div class="waiting-container">
+        <h2>Room: <span id="display-room-code" class="room-code-badge"></span></h2>
+        <p class="hint">Share this code with friends!</p>
+        <div id="player-list" class="player-list"></div>
+        <button class="btn btn-primary hidden" id="btn-start">Start Game</button>
+        <p id="waiting-msg" class="hint">Waiting for host to start…</p>
+      </div>
+    </div>
+
+    <!-- ── Game Screen ── -->
+    <div id="screen-game" class="screen">
+      <!-- Top bar -->
+      <div class="game-topbar">
+        <div class="room-info">Room: <strong id="game-room-code"></strong></div>
+        <div id="turn-indicator" class="turn-indicator"></div>
+        <button class="btn btn-danger btn-sm" id="btn-cabo">Call CABO</button>
+      </div>
+
+      <!-- Opponents area -->
+      <div id="opponents-area" class="opponents-area"></div>
+
+      <!-- Center: deck + discard -->
+      <div class="center-area">
+        <div class="pile-group">
+          <div class="pile-label">Deck</div>
+          <div class="card card-back" id="deck-pile">
+            <span id="deck-count" class="deck-count"></span>
+          </div>
+        </div>
+        <div class="pile-group">
+          <div class="pile-label">Discard</div>
+          <div class="card" id="discard-pile"></div>
+        </div>
+      </div>
+
+      <!-- Drawn card area -->
+      <div id="drawn-area" class="drawn-area hidden">
+        <p class="hint">You drew:</p>
+        <div class="card" id="drawn-card-display"></div>
+        <div class="drawn-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-discard-drawn">Discard It</button>
+          <p class="hint">— or click a card in your hand to swap —</p>
+        </div>
+      </div>
+
+      <!-- Special action prompt -->
+      <div id="special-action-area" class="special-area hidden">
+        <p id="special-action-msg" class="hint"></p>
+        <button class="btn btn-secondary btn-sm" id="btn-skip-special">Skip</button>
+      </div>
+
+      <!-- Player's own hand -->
+      <div class="my-hand-area">
+        <div class="pile-label">Your Hand</div>
+        <div id="my-hand" class="hand-cards"></div>
+      </div>
+
+      <!-- Cabo called banner -->
+      <div id="cabo-banner" class="cabo-banner hidden"></div>
+    </div>
+
+    <!-- ── Round End Screen ── -->
+    <div id="screen-end" class="screen">
+      <div class="end-container">
+        <h2>Round Over!</h2>
+        <div id="round-scores" class="score-table"></div>
+        <button class="btn btn-primary hidden" id="btn-play-again">Play Again</button>
+        <p id="end-waiting-msg" class="hint hidden">Waiting for host to start next round…</p>
+      </div>
+    </div>
+
+    <!-- ── Peek Overlay ── -->
+    <div id="peek-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3>Peek at your cards!</h3>
+        <p class="hint">Memorise these — they'll be hidden in <span id="peek-countdown">5</span>s</p>
+        <div id="peek-hand" class="hand-cards"></div>
+      </div>
+    </div>
+
+    <!-- ── Peek Result Overlay ── -->
+    <div id="peek-result-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h3 id="peek-result-title">Card Revealed</h3>
+        <div id="peek-result-card" class="card"></div>
+        <button class="btn btn-primary" id="btn-close-peek">OK</button>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/game.js"></script>
+  </body>
+</html>

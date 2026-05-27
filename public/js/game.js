@@ -321,6 +321,26 @@ function renderSpecialArea(state) {
   }
 }
 
+// ── Background Music ───────────────────────────────────────────────────────
+function startBgMusic() {
+  const music = $("bg-music");
+  if (!music) return;
+  const playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise.catch((err) => {
+      // Autoplay was blocked or the audio file is missing — fail silently
+      console.warn("Background music could not be started:", err.message);
+    });
+  }
+}
+
+function stopBgMusic() {
+  const music = $("bg-music");
+  if (!music) return;
+  music.pause();
+  music.currentTime = 0;
+}
+
 // ── Socket Events ──────────────────────────────────────────────────────────
 socket.on("connect", () => {
   myId = socket.id;
@@ -357,6 +377,7 @@ socket.on("gameStarted", () => {
   pendingSpecialAction = null;
   blindSwapMyIndex = null;
   showScreen("game");
+  startBgMusic();
 });
 
 socket.on("peekCards", ({ hand }) => {
@@ -411,6 +432,7 @@ socket.on("caboCalled", ({ playerName }) => {
 });
 
 socket.on("roundEnd", ({ scores, caboCalledBy }) => {
+  stopBgMusic();
   showScreen("end");
 
   const table = $("round-scores");
